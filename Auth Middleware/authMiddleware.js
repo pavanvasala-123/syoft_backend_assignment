@@ -30,13 +30,19 @@ const admin = (req, res, next) => {
   next();
 };
 
-const manager = (req, res, next) => {
+// const manager = (req, res, next) => {
+//   console.log(req.user.role)
+//   if (req.user.role !== 'admin' && req.user.role !== 'manager') {
+//     return res.status(403).json({ message: 'Access denied' });
+//   }
+//   next();
+// };
+const adminOrManager = (req, res, next) => {
   if (req.user.role !== 'admin' && req.user.role !== 'manager') {
     return res.status(403).json({ message: 'Access denied' });
   }
   next();
 };
-
 const noStaff = (req, res, next) => {
   if (req.user.role === 'staff') {
     return res.status(403).json({ message: 'Access denied' });
@@ -44,4 +50,4 @@ const noStaff = (req, res, next) => {
   next();
 };
 
-module.exports = { auth, admin, manager, noStaff };
+module.exports = { auth, admin, adminOrManager, noStaff };
