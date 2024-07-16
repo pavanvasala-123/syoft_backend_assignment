@@ -6,12 +6,20 @@ const bcrypt = require('bcryptjs');
 const register = async (req, res) => {
   const { username, email, password, role } = req.body;
 
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
   // Validation
   if (!username) {
     return res.status(400).json({ message: 'Username is required' });
   }
   if (!email) {
     return res.status(400).json({ message: 'Email is required' });
+  }
+  if (!validateEmail(email)) {
+    return res.status(400).json({ message: 'Invalid email format' });
   }
   if (!password) {
     return res.status(400).json({ message: 'Password is required' });
@@ -40,9 +48,17 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
 
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
   // Validation
   if (!email) {
     return res.status(400).json({ message: 'Email is required' });
+  }
+  if (!validateEmail(email)) {
+    return res.status(400).json({ message: 'Invalid email format' });
   }
   if (!password) {
     return res.status(400).json({ message: 'Password is required' });
